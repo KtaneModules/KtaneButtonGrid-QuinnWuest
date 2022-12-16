@@ -277,6 +277,7 @@ public class ButtonGridScript : MonoBehaviour
         if (Regex.Match(command, @"^\s*sus(sy|picious)?\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).Success)
         {
             yield return null;
+            yield return "sendtochaterror Suspicious command.";
             _sixtyNineTheSexNumber = true;
             yield break;
         }
@@ -291,20 +292,45 @@ public class ButtonGridScript : MonoBehaviour
             yield break;
         command = command.Substring(6);
         var parameters = command.Split(' ');
-        var btns = new List<int>();
+        var btnsNumber = new List<int>();
+        var fine = true;
         for (int i = 0; i < parameters.Length; i++)
         {
             int val;
             if (!int.TryParse(parameters[i], out val) || val < 1 || val > 20)
+            {
+                fine = false;
+                break;
+            }
+            else
+                btnsNumber.Add(val - 1);
+        }
+        if (fine)
+        {
+            yield return null;
+            for (int i = 0; i < btnsNumber.Count; i++)
+            {
+                ButtonSels[btnsNumber[i]].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield break;
+        }
+        var btnsCoords = new List<int>();
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            int col = "abcde".IndexOf(parameters[i][0]);
+            int row = "1234".IndexOf(parameters[i][1]);
+            if (col == -1 || row == -1)
                 yield break;
-            btns.Add(val - 1);
+            btnsCoords.Add(row * 5 + col);
         }
         yield return null;
-        for (int i = 0; i < btns.Count; i++)
+        for (int i = 0; i < btnsCoords.Count; i++)
         {
-            ButtonSels[btns[i]].OnInteract();
+            ButtonSels[btnsCoords[i]].OnInteract();
             yield return new WaitForSeconds(0.1f);
         }
+
     }
 
     private IEnumerator TwitchHandleForcedSolve()
