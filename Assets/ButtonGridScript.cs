@@ -83,7 +83,7 @@ public class ButtonGridScript : MonoBehaviour
                     for (int i = 0; i < 20; i++)
                     {
                         CBTexts[i].text = "";
-                        ButtonObjs[i].GetComponent<MeshRenderer>().material = ButtonMats[(int)ButtonColor.Green];
+                        ButtonObjs[i].GetComponent<MeshRenderer>().material = ButtonMats[(int) ButtonColor.Green];
                     }
                     if (_sixtyNineTheSexNumber)
                         FourHundredTwentyBlazeIt();
@@ -106,7 +106,7 @@ public class ButtonGridScript : MonoBehaviour
                         for (int i = 0; i < 20; i++)
                         {
                             CBTexts[i].text = "";
-                            ButtonObjs[i].GetComponent<MeshRenderer>().material = ButtonMats[(int)ButtonColor.Green];
+                            ButtonObjs[i].GetComponent<MeshRenderer>().material = ButtonMats[(int) ButtonColor.Green];
                         }
                         if (_sixtyNineTheSexNumber)
                             FourHundredTwentyBlazeIt();
@@ -148,10 +148,10 @@ public class ButtonGridScript : MonoBehaviour
 
     private void Generate()
     {
-        _buttonColors = Enumerable.Range(0, 20).Select(i => (ButtonColor)(i / 5)).ToArray().Shuffle();
+        _buttonColors = Enumerable.Range(0, 20).Select(i => (ButtonColor) (i / 5)).ToArray().Shuffle();
         for (int i = 0; i < _buttonColors.Length; i++)
         {
-            ButtonObjs[i].GetComponent<MeshRenderer>().sharedMaterial = ButtonMats[(int)_buttonColors[i]];
+            ButtonObjs[i].GetComponent<MeshRenderer>().sharedMaterial = ButtonMats[(int) _buttonColors[i]];
             CBTexts[i].text = _buttonColors[i].ToString().Substring(0, 1);
         }
         _expectedAnswers = new List<ButtonColor>();
@@ -291,33 +291,30 @@ public class ButtonGridScript : MonoBehaviour
         if (!command.StartsWith("press "))
             yield break;
         command = command.Substring(6);
-        var parameters = command.Split(' ');
+        var parameters = command.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
         var btnsNumber = new List<int>();
-        var fine = true;
         for (int i = 0; i < parameters.Length; i++)
         {
             int val;
             if (!int.TryParse(parameters[i], out val) || val < 1 || val > 20)
-            {
-                fine = false;
-                break;
-            }
-            else
-                btnsNumber.Add(val - 1);
+                goto maybeCoordinates;
+            btnsNumber.Add(val - 1);
         }
-        if (fine)
+
+        yield return null;
+        for (int i = 0; i < btnsNumber.Count; i++)
         {
-            yield return null;
-            for (int i = 0; i < btnsNumber.Count; i++)
-            {
-                ButtonSels[btnsNumber[i]].OnInteract();
-                yield return new WaitForSeconds(0.1f);
-            }
-            yield break;
+            ButtonSels[btnsNumber[i]].OnInteract();
+            yield return new WaitForSeconds(0.1f);
         }
+        yield break;
+
+        maybeCoordinates:
         var btnsCoords = new List<int>();
         for (int i = 0; i < parameters.Length; i++)
         {
+            if (parameters[i].Length < 2)
+                yield break;
             int col = "abcde".IndexOf(parameters[i][0]);
             int row = "1234".IndexOf(parameters[i][1]);
             if (col == -1 || row == -1)
@@ -330,7 +327,6 @@ public class ButtonGridScript : MonoBehaviour
             ButtonSels[btnsCoords[i]].OnInteract();
             yield return new WaitForSeconds(0.1f);
         }
-
     }
 
     private IEnumerator TwitchHandleForcedSolve()
@@ -345,7 +341,7 @@ public class ButtonGridScript : MonoBehaviour
             {
                 int ix = btns.IndexOf(_expectedAnswers[i * 4 + j]);
                 list.Add(ix);
-                btns[ix] = (ButtonColor)4;
+                btns[ix] = (ButtonColor) 4;
             }
         }
         for (int i = 0; i < list.Count; i++)
