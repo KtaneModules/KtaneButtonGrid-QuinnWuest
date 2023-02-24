@@ -83,7 +83,7 @@ public class ButtonGridScript : MonoBehaviour
                     for (int i = 0; i < 20; i++)
                     {
                         CBTexts[i].text = "";
-                        ButtonObjs[i].GetComponent<MeshRenderer>().material = ButtonMats[(int) ButtonColor.Green];
+                        ButtonObjs[i].GetComponent<MeshRenderer>().material = ButtonMats[(int)ButtonColor.Green];
                     }
                     if (_sixtyNineTheSexNumber)
                         FourHundredTwentyBlazeIt();
@@ -106,7 +106,7 @@ public class ButtonGridScript : MonoBehaviour
                         for (int i = 0; i < 20; i++)
                         {
                             CBTexts[i].text = "";
-                            ButtonObjs[i].GetComponent<MeshRenderer>().material = ButtonMats[(int) ButtonColor.Green];
+                            ButtonObjs[i].GetComponent<MeshRenderer>().material = ButtonMats[(int)ButtonColor.Green];
                         }
                         if (_sixtyNineTheSexNumber)
                             FourHundredTwentyBlazeIt();
@@ -148,10 +148,10 @@ public class ButtonGridScript : MonoBehaviour
 
     private void Generate()
     {
-        _buttonColors = Enumerable.Range(0, 20).Select(i => (ButtonColor) (i / 5)).ToArray().Shuffle();
+        _buttonColors = Enumerable.Range(0, 20).Select(i => (ButtonColor)(i / 5)).ToArray().Shuffle();
         for (int i = 0; i < _buttonColors.Length; i++)
         {
-            ButtonObjs[i].GetComponent<MeshRenderer>().sharedMaterial = ButtonMats[(int) _buttonColors[i]];
+            ButtonObjs[i].GetComponent<MeshRenderer>().sharedMaterial = ButtonMats[(int)_buttonColors[i]];
             CBTexts[i].text = _buttonColors[i].ToString().Substring(0, 1);
         }
         _expectedAnswers = new List<ButtonColor>();
@@ -341,7 +341,7 @@ public class ButtonGridScript : MonoBehaviour
             {
                 int ix = btns.IndexOf(_expectedAnswers[i * 4 + j]);
                 list.Add(ix);
-                btns[ix] = (ButtonColor) 4;
+                btns[ix] = (ButtonColor)4;
             }
         }
         for (int i = 0; i < list.Count; i++)
