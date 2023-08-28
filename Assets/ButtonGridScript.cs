@@ -114,8 +114,8 @@ public class ButtonGridScript : MonoBehaviour
                 }
                 else
                 {
-                    Module.HandleStrike();
                     Debug.LogFormat("[Button Grid #{0}] Incorrectly pressed {1}. Strike.", _moduleId, _currentPresses.Select(i => _buttonColors[i].ToString() + " (" + (i + 1) + ")").Join(", "));
+                    Module.HandleStrike();
                 }
                 _currentPresses.Clear();
             }
@@ -231,12 +231,12 @@ public class ButtonGridScript : MonoBehaviour
         }
         else if (_buttonColors[0] == ButtonColor.Green)
         {
-            Debug.LogFormat("[Button Grid #{0}] The first button's color is red. Adding: Green, Red, Blue, Yellow.", _moduleId);
+            Debug.LogFormat("[Button Grid #{0}] The first button's color is green. Adding: Green, Red, Blue, Yellow.", _moduleId);
             _expectedAnswers.AddRange(new ButtonColor[] { ButtonColor.Green, ButtonColor.Red, ButtonColor.Blue, ButtonColor.Yellow });
         }
         else if (_buttonColors[0] == ButtonColor.Yellow)
         {
-            Debug.LogFormat("[Button Grid #{0}] The first button's color is red. Adding: Yellow, Red, Green, Blue.", _moduleId);
+            Debug.LogFormat("[Button Grid #{0}] The first button's color is yellow. Adding: Yellow, Red, Green, Blue.", _moduleId);
             _expectedAnswers.AddRange(new ButtonColor[] { ButtonColor.Yellow, ButtonColor.Red, ButtonColor.Green, ButtonColor.Blue });
         }
         else
